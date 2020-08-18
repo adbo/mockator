@@ -3,10 +3,8 @@ import json
 import random
 import string
 
-ITEMS = 10000
+ITEMS = 100
 WORDS = 100
-DATE_FORMAT = '%d-%m-%Y'
-HOUR_FORMAT = '%H:%M'
 
 with open('words.json') as words_file:
     words = json.load(words_file)
@@ -36,10 +34,10 @@ with open('expression.json') as json_file:
                 word = random.choice(words)
                 document[field.get('name')] = word
             elif field_type == 'date':
-                document[field.get('name')] = date.strftime(DATE_FORMAT)
+                document[field.get('name')] = date.strftime('%d-%b-%Y')
             elif field_type == 'datetime':
                 increment_date = date + datetime.timedelta(days=field.get('args').get('increment'))
-                document[field.get('name')] = increment_date.strftime(f'{DATE_FORMAT} {HOUR_FORMAT}')
+                document[field.get('name')] = increment_date.strftime('%d-%b-%Y %I:%M %p')
             elif field_type == 'description':
                 document[field.get('name')] = f'{document_name} {word}'
             elif field_type == 'email':
@@ -50,4 +48,4 @@ with open('expression.json') as json_file:
         documents.append(document)
 
     with open('output.json', 'w') as output:
-        output.write("\n".join(f'{{"index":{{"_id": "{i+1}"}}}}\n{v}' for i, v in enumerate((json.dumps(item) for item in documents))))
+        output.write(json.dumps(documents))
