@@ -3,7 +3,7 @@ import json
 import random
 import string
 
-ITEMS = 100
+ITEMS = 10000
 WORDS = 100
 
 with open('words.json') as words_file:
